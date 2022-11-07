@@ -18,9 +18,7 @@ const compression_1 = __importDefault(require("compression"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const errorHandler_middleware_1 = __importDefault(require("./utils/errorHandler.middleware"));
-const path_1 = __importDefault(require("path"));
-// const __filename = path
-// const __dirname = dirname(__filename)
+const http_status_codes_1 = require("http-status-codes");
 class App {
     constructor(controllers, port) {
         this.express = (0, express_1.default)();
@@ -42,11 +40,11 @@ class App {
         this.express.use(express_1.default.json());
         this.express.use(express_1.default.urlencoded({ extended: false }));
         this.express.use((0, compression_1.default)());
-        console.log(path_1.default.basename(path_1.default.dirname(__filename)));
-        // this.express.use(express.static(__filename, './client/build'))
-        // this.express.get('*', )
     }
     initializeControllers(controllers) {
+        this.express.get("/", (req, res) => __awaiter(this, void 0, void 0, function* () {
+            res.status(http_status_codes_1.StatusCodes.OK).send("Noted API");
+        }));
         controllers.forEach((controller) => {
             this.express.use("/api", controller.router);
         });

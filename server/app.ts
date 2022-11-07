@@ -1,15 +1,14 @@
-import express, { Application } from "express"
+import express, { Application, Request, Response } from "express"
 import mongoose from "mongoose"
 import compression from "compression"
 import cors from "cors"
 import morgan from "morgan"
 import Controller from "./utils/controller.interface"
 import errorHandlerMiddleware from "./utils/errorHandler.middleware"
-import { fileURLToPath } from "url"
-import path, { dirname } from "path"
 
-// const __filename = path
-// const __dirname = dirname(__filename)
+import path from "path"
+import { StatusCodes } from "http-status-codes"
+
 class App {
     public express: Application
     public port: number
@@ -38,13 +37,12 @@ class App {
         this.express.use(express.json())
         this.express.use(express.urlencoded({ extended: false }))
         this.express.use(compression())
-
-        console.log(path.basename(path.dirname(__filename)))
-
-        // this.express.get('*', )
     }
 
     private initializeControllers(controllers: Controller[]) {
+        this.express.get("/", async (req: Request, res: Response) => {
+            res.status(StatusCodes.OK).send("Noted API")
+        })
         controllers.forEach((controller: Controller) => {
             this.express.use("/api", controller.router)
         })
