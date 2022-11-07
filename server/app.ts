@@ -5,7 +5,11 @@ import cors from "cors"
 import morgan from "morgan"
 import Controller from "./utils/controller.interface"
 import errorHandlerMiddleware from "./utils/errorHandler.middleware"
+import { fileURLToPath } from "url"
+import path, { dirname } from "path"
 
+// const __filename = path
+// const __dirname = dirname(__filename)
 class App {
     public express: Application
     public port: number
@@ -34,6 +38,10 @@ class App {
         this.express.use(express.json())
         this.express.use(express.urlencoded({ extended: false }))
         this.express.use(compression())
+
+        console.log(path.basename(path.dirname(__filename)))
+
+        // this.express.get('*', )
     }
 
     private initializeControllers(controllers: Controller[]) {
